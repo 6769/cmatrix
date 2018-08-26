@@ -29,7 +29,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <termios.h>
+// #include <termios.h>
 #include <signal.h>
 
 #ifndef EXCLUDE_CONFIG_H
@@ -37,9 +37,9 @@
 #endif
 
 #ifdef HAVE_NCURSES_H
-#include <ncurses.h>
+#include <ncurses/ncurses.h>
 #else
-#include <curses.h>
+#include <ncurses/curses.h>
 #endif
 
 #ifdef HAVE_SYS_IOCTL_H
@@ -218,7 +218,7 @@ void var_init() {
 void sighandler(int s) {
     signal_status = s;
 }
-
+/*
 void resize_screen(void) {
     char *tty;
     int fd = 0;
@@ -254,14 +254,18 @@ void resize_screen(void) {
     if (wresize(stdscr, LINES, COLS) == ERR) {
         c_die("Cannot resize window!");
     }
-#endif /* HAVE_WRESIZE */
-#endif /* HAVE_RESIZETERM */
+#endif 
+#endif 
 
     var_init();
-    /* Do these because width may have changed... */
+    //Do these because width may have changed... 
     clear();
     refresh();
 }
+
+*/
+/**/
+
 
 int main(int argc, char *argv[]) {
     int i, y, z, optchr, keypress;
@@ -361,7 +365,7 @@ int main(int argc, char *argv[]) {
 
     if (force && strcmp("linux", getenv("TERM"))) {
         /* setenv is much more safe to use than putenv */
-        setenv("TERM", "linux", 1);
+        //setenv("TERM", "linux", 1);//putenv();
     }
     initscr();
     savetty();
@@ -372,7 +376,7 @@ int main(int argc, char *argv[]) {
     leaveok(stdscr, TRUE);
     curs_set(0);
     signal(SIGINT, sighandler);
-    signal(SIGWINCH, sighandler);
+    //signal(SIGWINCH, sighandler);
 
 if (console) {
 #ifdef HAVE_CONSOLECHARS
@@ -438,10 +442,10 @@ if (console) {
             finish();
             /* exits */
         }
-        if (signal_status == SIGWINCH) {
+        /* if (signal_status == SIGWINCH) {
             resize_screen();
             signal_status = 0;
-        }
+        } */
 
         count++;
         if (count > 4) {
